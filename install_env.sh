@@ -121,6 +121,15 @@ conda env config vars set TORCH_CUDA_ARCH_LIST=$TORCH_CUDA_ARCH_LIST
 conda deactivate
 conda activate $CONDA_ENV
 
+# ------------------------------------------------------------------
+# Force CUDA 11.8 PyTorch wheels so fused_ssim builds
+pip uninstall -y torch torchvision torchaudio || true
+pip install --no-cache-dir \
+  torch==2.1.2+cu118 torchvision==0.16.2+cu118 torchaudio==2.1.2+cu118 \
+  --index-url https://download.pytorch.org/whl/cu118
+# ------------------------------------------------------------------
+
+
 # Install CUDA and PyTorch dependencies
 # CUDA 11.8 supports until compute capability 9.0
 if [ "$CUDA_VERSION" = "11.8.0" ]; then
